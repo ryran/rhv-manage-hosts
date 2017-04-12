@@ -1,5 +1,5 @@
 #!/bin/bash
-# rhv-manage-hosts v0.3 last mod 2017/04/12
+# rhv-manage-hosts v0.4 last mod 2017/04/12
 # Latest version at <https://github.com/ryran/rhv-manage-hosts>
 # Copyright 2017 Ryan Sawhill Aroha <rsaw@redhat.com>
 #
@@ -76,11 +76,11 @@ rewrite_ovirtshell_cfg() {
 
 wait_for_api_server() {
 	local cert="http://${RHVM}/ovirt-engine/services/pki-resource?resource=ca-certificate&format=X509-PEM-CA"
-	echo -n "Waiting for RHVM API server ... "
+	echo "Waiting for RHVM API server ..."
 	until curl -s ${cert} | openssl x509 &>/dev/null; do
 		sleep 10
 	done
-	echo "✔ READY"
+	echo "  ✔ READY"
 	curl -so ~/.rhvm.crt ${cert}
 }
 
@@ -107,7 +107,7 @@ quit_if_rhvm_pingcheck_fails() {
 	if ! ping -c2 -W4 ${RHVM} &>/dev/null; then
 		echo "RHVM not responding to pings; Aborting!" >&2
 		[[ ${daemonMode} ]] && rguard -0
-		exit 9
+		exit 0
 	fi
 }
 
