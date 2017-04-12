@@ -1,0 +1,23 @@
+# This config file is part of rhv-manage-hosts
+# Optional service config file meant to be stored as /etc/sysconfig/rhv-manage-hosts
+
+# If your RHVM FQDN is not "rhvm.$(dnsdomainname)", set this:
+;RHVM=your.rhvm.fqdn
+
+# If your RHVM user is not "admin@internal", set this:
+;RHVM_USER=admin@internal
+
+# If you don't want to start/stop all hosts, specify hosts by name:
+;MANAGE_HOSTS="host1 host2 host3"
+
+# If you don't want to wait for all datacenters to start, specify dcs by name:
+;MANAGE_DCS="datacenter1 datacenter2 datacenter3"
+
+# To wait for zero datacenters, store a space:
+;MANAGE_DCS=" "
+
+# If you don't want to start/stop all VMs, specify VMs by name:
+;MANAGE_VMS="vm1 vm2 vm3"
+
+# To start/stop zero VMs, store a space:
+;MANAGE_VMS=" "

@@ -1,5 +1,5 @@
 #!/bin/bash
-# rhv-manage-hosts v0.2 last mod 2017/04/12
+# rhv-manage-hosts v0.3 last mod 2017/04/12
 # Latest version at <https://github.com/ryran/rhv-manage-hosts>
 # Copyright 2017 Ryan Sawhill Aroha <rsaw@redhat.com>
 #
@@ -287,6 +287,8 @@ deactivate() {
 print_help() {
 	cat >&2 <<-EOF
 		Usage: ${0##*/} activate|deactivate|daemon
+		Automatically put RHV hosts into maintenance mode for graceful shutdowns
+		Automatically re-activate RHV hosts from maintenance mode for easy startups
 		
 		activate:
 		  1) From a RHV host, activate only that host.
@@ -317,7 +319,9 @@ print_help() {
 		  5) Run "rguard -0" cmd to unblock shutdown/reboot.
 		  
 		  The daemon mode requires reboot-guard (https://github.com/ryran/reboot-guard)
-		  to block and unblock shutdown, so ensure that is installed.
+		  to block and unblock shutdown, so ensure that is installed. Daemon mode is
+		  also meant to be run from a service manager like systemd. Take a look at
+		  /lib/systemd/system/${0##*/}.service & /etc/sysconfig/${0##*/}.
 		
 		SETUP / ENVIRONMENT VARIABLES:
 		  * Set RHVM variable to FQDN of the RHVM; default: "rhvm.\$(dnsdomainname)"
