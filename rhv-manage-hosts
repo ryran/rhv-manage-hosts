@@ -106,6 +106,7 @@ get_list() {
 quit_if_rhvm_pingcheck_fails() {
 	if ! ping -c2 -W4 ${RHVM} &>/dev/null; then
 		echo "RHVM not responding to pings; Aborting!" >&2
+		[[ ${daemonMode} ]] && rguard -0
 		exit 9
 	fi
 }
