@@ -1,5 +1,5 @@
 #!/bin/bash
-# rhv-manage-hosts v0.4 last mod 2017/04/12
+# rhv-manage-hosts v0.5 last mod 2017/04/27
 # Latest version at <https://github.com/ryran/rhv-manage-hosts>
 # Copyright 2017 Ryan Sawhill Aroha <rsaw@redhat.com>
 #
@@ -115,17 +115,19 @@ loop_wait() {
 	local sleep=${sleep:-10} count=1 maxcount=${maxcount:-36}
 	local objtype=${1} name=${2} desiredState=${3#*=} action=${4#*=}
 	sleep ${sleep}
-	until [[ $(get_state ${objtype} ${name}) == ${desiredState} ]]; do
+	local state=$(get_state ${objtype} ${name})
+	until [[ ${state} == ${desiredState} ]]; do
 		quit_if_rhvm_pingcheck_fails
 		if (( count++ == maxcount )); then
 			echo "  EXCEPTION: Something went wrong because ${objtype} still hasn't reached ${desiredState} state after $((sleep*maxcount)) seconds!"
 			return 1
 		fi
-		echo "  Still waiting for ${objtype^^} ..."
+		echo "  Still waiting for ${objtype^^} ${name} (current state: '${state}') ..."
 		if [[ ${action} ]]; then
 			ovirt-shell -E "action ${objtype} ${name} ${action}" &>/dev/null || :
 		fi
 		sleep ${sleep}
+		state=$(get_state ${objtype} ${name})
 	done
 	echo "  ✔ DONE"
 }
